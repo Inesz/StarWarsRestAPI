@@ -35,6 +35,7 @@ public class ReportService {
      */
     public void updateReport(String reportId, String characterPhrase, String planetName) {
         Report report = createReport(reportId, characterPhrase, planetName);
+        deleteReport(reportId);
         reportCRUD.save(report);
     }
 

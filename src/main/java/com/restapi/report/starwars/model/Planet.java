@@ -21,7 +21,7 @@ public class Planet {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @OneToMany(targetEntity = Person.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(targetEntity = Person.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn
     private List<Person> people = new ArrayList<>();
     @JsonProperty("name")
