@@ -1,37 +1,43 @@
 package com.restapi.report.starwars.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.restapi.report.starwars.serializer.ReportJacksonSerializer;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
+/**
+ * DB table model.
+ * Main Report entity.
+ * The basis for report serialization.
+ */
 @Entity(name = "report")
 @Table(name = "report")
-@JsonPropertyOrder({
-        "reportId",
-        "query_criteria_character_phrase",
-        "query_criteria_planet_name",
-        "result"
-})
+@JsonSerialize(using = ReportJacksonSerializer.class)
 public class Report {
+    private static final long serialVersionUID = -1700070786993154600L;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column()
-    @JsonProperty("report_id")
+    @Column(name = "id")
+    @NotNull
     private String reportId;
     @Column()
     @NotNull
-    @JsonProperty("query_criteria_character_phrase")
     private String queryCriteriaCharacterPhrase;
     @Column()
     @NotNull
-    @JsonProperty("query_criteria_planet_name")
     private String queryCriteriaPlanetName;
+    @OneToOne(targetEntity = Planet.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Planet planet = null;
 
-    @OneToMany(targetEntity = Result.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "reportId")
-    private List<Result> result = null;
+    public Report() {
+    }
+
+    public Report(String reportId, String queryCriteriaCharacterPhrase, String queryCriteriaPlanetName) {
+        this.reportId = reportId;
+        this.queryCriteriaCharacterPhrase = queryCriteriaCharacterPhrase;
+        this.queryCriteriaPlanetName = queryCriteriaPlanetName;
+    }
 
     public String getReportId() {
         return reportId;
@@ -57,15 +63,16 @@ public class Report {
         this.queryCriteriaPlanetName = queryCriteriaPlanetName;
     }
 
-    public List<Result> getResult() {
-        return result;
+    public Planet getPlanet() {
+        return planet;
     }
 
-    public void setResult(List<Result> result) {
-        this.result = result;
+    public void setPlanet(Planet planet) {
+        this.planet = planet;
     }
 
-    public void addResult(Result result) {
-        this.result.add(result);
+    @Override
+    public String toString(){
+        return "[" + getReportId() + " " + getQueryCriteriaCharacterPhrase() + " " + getQueryCriteriaPlanetName() + " " + getPlanet() + "]";
     }
 }
