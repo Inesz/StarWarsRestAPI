@@ -10,7 +10,12 @@ import java.util.Optional;
 @EnableAutoConfiguration
 public interface ReportCRUD extends CrudRepository<Report, String> {
     List<Report> findAll();
+
     Optional<Report> findByReportId(String reportId);
 
     Report save(Report report);
+
+    void deleteById(String reportId);
+
+    void deleteAll();
 }

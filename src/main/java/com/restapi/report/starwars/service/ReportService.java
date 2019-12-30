@@ -46,7 +46,7 @@ public class ReportService {
      * @param planetName      full planet name
      * @return fully built Report or null
      */
-    public Report createReport(String reportId, String characterPhrase, String planetName) {
+    private Report createReport(String reportId, String characterPhrase, String planetName) {
         Report report = new Report(reportId, characterPhrase, planetName);
 
         addPlanet(report, report.getQueryCriteriaPlanetName());
@@ -118,15 +118,44 @@ public class ReportService {
         return film;
     }
 
+    /**
+     * Return Report with given "reportId" or null.
+     *
+     * @param reportId
+     * @return
+     */
     public Report getReport(String reportId) {
         return reportCRUD.findByReportId(reportId).orElse(null);
     }
 
+    /**
+     * Return all Reports.
+     *
+     * @return
+     */
     public List<Report> getReports() {
         try {
             return reportCRUD.findAll();
         } catch (Exception e) {
             return new ArrayList<>();
         }
+    }
+
+    /**
+     * Delete Report with given "reportId" from DB.
+     *
+     * @param reportId
+     */
+    public void deleteReport(String reportId) {
+        if (reportCRUD.existsById(reportId)) {
+            reportCRUD.deleteById(reportId);
+        }
+    }
+
+    /**
+     * Delete all Report from DB.
+     */
+    public void deleteReports() {
+        reportCRUD.deleteAll();
     }
 }
