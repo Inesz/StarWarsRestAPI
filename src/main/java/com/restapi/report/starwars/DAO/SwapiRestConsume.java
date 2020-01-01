@@ -18,7 +18,7 @@ import java.text.MessageFormat;
 @Configuration
 @ComponentScan
 public class SwapiRestConsume {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SwapiRestConsume.class);
+    private static final Logger logger = LoggerFactory.getLogger(SwapiRestConsume.class);
     private static final String SWAPI_BASE_URL = "https://swapi.co/api/";
     private static final String SWAPI_PLANETS_URI = "planets/";
     private static final String SWAPI_SEARCH_PARAMETER = "?search=";
@@ -34,9 +34,9 @@ public class SwapiRestConsume {
 
     private ExchangeFilterFunction logRequest() {
         return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {
-            if (LOGGER.isInfoEnabled()) {
+            if (logger.isInfoEnabled()) {
                 String message = MessageFormat.format("Request: {0}", clientRequest.url());
-                LOGGER.info(message);
+                logger.info(message);
             }
             return Mono.just(clientRequest);
         });
@@ -52,7 +52,7 @@ public class SwapiRestConsume {
         try {
             return filterPlanet(getPlanets(searchPlanetName), searchPlanetName);
         } catch (Exception e) {
-            LOGGER.info("Planet get error:", e);
+            logger.info("Planet get error:", e);
             return null;
         }
     }
@@ -70,7 +70,7 @@ public class SwapiRestConsume {
                     .bodyToMono(swapiResultsPlanet)
                     .block();
         } catch (Exception e) {
-            LOGGER.info("Planet retrieve error:", e);
+            logger.info("Planet retrieve error:", e);
             return null;
         }
     }
@@ -118,7 +118,7 @@ public class SwapiRestConsume {
                     .bodyToMono(Film.class)
                     .block();
         } catch (Exception e) {
-            LOGGER.info("Film retrieve error:", e);
+            logger.info("Film retrieve error:", e);
             return null;
         }
     }

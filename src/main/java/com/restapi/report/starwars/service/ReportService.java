@@ -6,8 +6,6 @@ import com.restapi.report.starwars.model.Film;
 import com.restapi.report.starwars.model.Person;
 import com.restapi.report.starwars.model.Planet;
 import com.restapi.report.starwars.model.Report;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +16,6 @@ import java.util.Map;
 
 @Service
 public class ReportService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReportService.class);
-
     @Autowired
     private SwapiRestConsume swapiRest;
 

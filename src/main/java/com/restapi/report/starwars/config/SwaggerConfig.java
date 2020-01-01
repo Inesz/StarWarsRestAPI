@@ -15,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
 @EnableSwagger2WebFlux
 public class SwaggerConfig {
     @Bean
-    public Docket SwaggerApi() {
+    public Docket swaggerApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("starwars-api")
                 .apiInfo(apiInfo())
