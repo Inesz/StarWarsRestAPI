@@ -1,6 +1,6 @@
 package com.restapi.report.starwars.controller;
 
-import com.restapi.report.starwars.DAO.ReportCRUD;
+import com.restapi.report.starwars.dao.ReportCRUD;
 import com.restapi.report.starwars.model.RequestBodyReport;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -17,9 +17,8 @@ import org.springframework.web.reactive.function.BodyInserters;
 @AutoConfigureWebTestClient
 public class RestApiControllerTest {
     private String TestCase1ReportId = "1";
-    private String TestCase1QueryCriteriaCharacterPhrase = "a";
+    private String TestCase1QueryCriteriaCharacterPhrase = "o";
     private String TestCase1QueryCriteriaPlanetName = "Naboo";
-
 
     @Autowired
     private WebTestClient webTestClient;
@@ -33,7 +32,7 @@ public class RestApiControllerTest {
     }
 
     @Test
-    public void updateReport() {
+    public void test1UpdateReportCheckResponseStatus_correctParameters_status204() {
         RequestBodyReport body = new RequestBodyReport();
         body.setQueryCriteriaCharacterPhrase(TestCase1QueryCriteriaCharacterPhrase);
         body.setQueryCriteriaPlanetName(TestCase1QueryCriteriaPlanetName);
@@ -44,20 +43,38 @@ public class RestApiControllerTest {
                 .body(BodyInserters.fromObject(body))
                 .exchange()
                 .expectStatus()
-                .isNoContent();
+                .isNoContent()
+                .expectBody()
+                .isEmpty();
+    }
+
+    @Test
+    public void test2updateReportCheckResponseStatus_incorrectParameters_status500() {
+        RequestBodyReport body = new RequestBodyReport();
+
+        webTestClient
+                .put()
+                .uri("/report/" + TestCase1ReportId)
+                .body(BodyInserters.fromObject(body))
+                .exchange()
+                .expectStatus()
+                .isBadRequest();
     }
 
 
     @Test
-    public void getReport() {
+    public void test3getReportCheckResponseStatus_noReportInDB_status200() {
         webTestClient
                 .get()
                 .uri("/report/" + TestCase1ReportId)
                 .exchange()
                 .expectStatus()
                 .isOk();
+    }
 
-        updateReport();
+    @Test
+    public void test4getReportCheckResponse_reportInDB_status200andResultNodeNotEmpty() {
+        test1UpdateReportCheckResponseStatus_correctParameters_status204();
 
         webTestClient
                 .get()
@@ -71,7 +88,7 @@ public class RestApiControllerTest {
     }
 
     @Test
-    public void getReports() {
+    public void test5getReportsCheckResponseStatus_noReportInDB_status200() {
         webTestClient
                 .get()
                 .uri("/report")
@@ -81,7 +98,7 @@ public class RestApiControllerTest {
     }
 
     @Test
-    public void deleteReport() {
+    public void test6deleteReportCheckResponseStatus_noReportInDB_status200() {
         webTestClient
                 .delete()
                 .uri("/report/" + TestCase1ReportId)
@@ -91,7 +108,7 @@ public class RestApiControllerTest {
     }
 
     @Test
-    public void deleteReports() {
+    public void test7deleteReportsCheckResponseStatus_noReportInDB_status200() {
         webTestClient
                 .delete()
                 .uri("/report")

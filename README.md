@@ -21,6 +21,27 @@ The application queries API with user input and stores transformed result in dat
 |delete report| DELETE | /report/{report_id}|
 |delete all reports| DELETE | /report|
 
+### Request body:
+{
+"query_criteria_character_phrase": "PHRASE",
+"query_criteria_planet_name": "NAME"
+}
+
+### Response body:
+{[{
+“report_id”: “{report_id},
+“query_criteria_character_phrase”: “CHARACTER_PHRASE”,
+“query_criteria_planet_name”: “PLANET_NAME”,
+“result”: [{
+    “film_id”: “FILM_ID”,
+    “film_name”: “FILM_NAME”,
+    “character_id”: “CHARACTER_ID”,
+    “character_name”: “CHARACTER_NAME”,
+    “planet_id”: “PLANET_ID”,
+    “planet_name”: “PLANET_NAME” }]
+}]}
+
+
 ## Technologies used:
 - Java JDK 11
 - Spring Boot
@@ -31,3 +52,4 @@ The application queries API with user input and stores transformed result in dat
 - JPA
 - Javadoc
 - Swagger
+- JUnit 5
