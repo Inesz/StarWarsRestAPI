@@ -1,7 +1,7 @@
 package com.restapi.report.starwars.service;
 
-import com.restapi.report.starwars.DAO.ReportCRUD;
-import com.restapi.report.starwars.DAO.SwapiRestConsume;
+import com.restapi.report.starwars.dao.ReportCRUD;
+import com.restapi.report.starwars.dao.SwapiRestConsume;
 import com.restapi.report.starwars.model.Film;
 import com.restapi.report.starwars.model.Person;
 import com.restapi.report.starwars.model.Planet;

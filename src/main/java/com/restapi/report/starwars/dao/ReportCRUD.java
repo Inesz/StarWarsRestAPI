@@ -1,4 +1,4 @@
-package com.restapi.report.starwars.DAO;
+package com.restapi.report.starwars.dao;
 
 import com.restapi.report.starwars.model.Report;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
