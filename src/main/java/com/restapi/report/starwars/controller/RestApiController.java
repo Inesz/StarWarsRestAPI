@@ -17,11 +17,6 @@ public class RestApiController {
     @Autowired
     private ReportService reportService;
 
-    @GetMapping(value = "/")
-    public ResponseEntity<String> getString() {
-        return new ResponseEntity<>("Hello! It is init Star Wars Rest API method", new HttpHeaders(), HttpStatus.OK);
-    }
-
     /**
      * Creates report with a given "reportId" and requestBodyReport parameters.
      * Inserts to DB or updates if report of given reportId exists.
