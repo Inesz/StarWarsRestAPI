@@ -16,9 +16,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 @SpringBootTest
 @AutoConfigureWebTestClient
 public class RestApiControllerTest {
-    private String TestCase1ReportId = "1";
-    private String TestCase1QueryCriteriaCharacterPhrase = "o";
-    private String TestCase1QueryCriteriaPlanetName = "Naboo";
+    private final String URI = "/report/";
 
     @Autowired
     private WebTestClient webTestClient;
@@ -33,14 +31,11 @@ public class RestApiControllerTest {
 
     @Test
     public void test1UpdateReportCheckResponseStatus_correctParameters_status204() {
-        RequestBodyReport body = new RequestBodyReport();
-        body.setQueryCriteriaCharacterPhrase(TestCase1QueryCriteriaCharacterPhrase);
-        body.setQueryCriteriaPlanetName(TestCase1QueryCriteriaPlanetName);
 
         webTestClient
                 .put()
-                .uri("/report/" + TestCase1ReportId)
-                .body(BodyInserters.fromObject(body))
+                .uri(URI + Data.DATA1.getReportId())
+                .body(BodyInserters.fromObject(Data.DATA1.getRequestBodyReport()))
                 .exchange()
                 .expectStatus()
                 .isNoContent()
@@ -49,36 +44,22 @@ public class RestApiControllerTest {
     }
 
     @Test
-    public void test2updateReportCheckResponseStatus_incorrectParameters_status500() {
-        RequestBodyReport body = new RequestBodyReport();
-
-        webTestClient
-                .put()
-                .uri("/report/" + TestCase1ReportId)
-                .body(BodyInserters.fromObject(body))
-                .exchange()
-                .expectStatus()
-                .isBadRequest();
-    }
-
-
-    @Test
-    public void test3getReportCheckResponseStatus_noReportInDB_status200() {
+    public void test2getReportCheckResponseStatus_noReportInDB_status200() {
         webTestClient
                 .get()
-                .uri("/report/" + TestCase1ReportId)
+                .uri(URI + Data.DATA2.getReportId())
                 .exchange()
                 .expectStatus()
                 .isOk();
     }
 
     @Test
-    public void test4getReportCheckResponse_reportInDB_status200andResultNodeNotEmpty() {
+    public void test3getReportCheckResponse_reportInDB_status200andResultNodeNotEmpty() {
         test1UpdateReportCheckResponseStatus_correctParameters_status204();
 
         webTestClient
                 .get()
-                .uri("/report/" + TestCase1ReportId)
+                .uri(URI + Data.DATA2.getReportId())
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -88,32 +69,61 @@ public class RestApiControllerTest {
     }
 
     @Test
-    public void test5getReportsCheckResponseStatus_noReportInDB_status200() {
+    public void test4getReportsCheckResponseStatus_noReportInDB_status200() {
         webTestClient
                 .get()
-                .uri("/report")
+                .uri(URI)
                 .exchange()
                 .expectStatus()
                 .isOk();
     }
 
     @Test
-    public void test6deleteReportCheckResponseStatus_noReportInDB_status200() {
+    public void test5deleteReportCheckResponseStatus_noReportInDB_status200() {
         webTestClient
                 .delete()
-                .uri("/report/" + TestCase1ReportId)
+                .uri(URI + Data.DATA2.getReportId())
                 .exchange()
                 .expectStatus()
                 .isOk();
     }
 
     @Test
-    public void test7deleteReportsCheckResponseStatus_noReportInDB_status200() {
+    public void test6deleteReportsCheckResponseStatus_noReportInDB_status200() {
         webTestClient
                 .delete()
-                .uri("/report")
+                .uri(URI)
                 .exchange()
                 .expectStatus()
                 .isOk();
+    }
+
+    static class Data {
+        static final DataModel DATA1 = new DataModel("1", "o", "Naboo");
+        static final DataModel DATA2 = new DataModel("1");
+
+        static class DataModel {
+            String reportId;
+            RequestBodyReport requestBodyReport;
+
+            DataModel(String reportId) {
+                this.reportId = reportId;
+            }
+
+            DataModel(String reportId, String queryCriteriaCharacterPhrase, String queryCriteriaPlanetName) {
+                this.reportId = reportId;
+                this.requestBodyReport = new RequestBodyReport();
+                requestBodyReport.setQueryCriteriaCharacterPhrase(queryCriteriaCharacterPhrase);
+                requestBodyReport.setQueryCriteriaPlanetName(queryCriteriaPlanetName);
+            }
+
+            String getReportId() {
+                return reportId;
+            }
+
+            RequestBodyReport getRequestBodyReport() {
+                return requestBodyReport;
+            }
+        }
     }
 }
